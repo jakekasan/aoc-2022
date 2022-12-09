@@ -1,9 +1,7 @@
-from audioop import reverse
 from functools import reduce
-from itertools import product
 import operator
 from pathlib import Path
-from pkgutil import get_data
+
 
 def load_data():
     return Path("./data/day8.txt").read_text()
@@ -21,30 +19,24 @@ def part1(data = None):
         visible.add((len(line) - 1, y))
         for x in range(1, len(line) - 1):
             if line[x] > line[x-1] and line[x] > max_:
-                # print(f"Visible from left {(x, y) = }")
                 visible.add((x, y))
             max_ = max([line[x], max_])
         max_ = grid[y][len(line)-1]
         for x in range(len(line) - 2, 0, -1):
             if line[x] > line[x+1] and line[x] > max_:
                 visible.add((x, y))
-                # print(f"Visible from right {(x, y) = }")
             max_ = max([line[x], max_])
     for x in range(1, len(grid[0])):
         max_ = grid[0][x]
         for y in range(1, len(grid)):
             if grid[y][x] > grid[y-1][x] and grid[y][x] > max_:
-                # print(f"Visible from top {(x, y) = }, cur = {grid[y][x]},prev = {grid[y-1][x]}, max={max_}")
                 visible.add((x, y))
             max_ = max([grid[y][x], max_])
         max_ = grid[len(grid) - 1][x]
         for y in range(len(grid) - 2, 0, -1):
             if grid[y][x] > grid[y+1][x] and grid[y][x] > max_:
-                # print(f"Visible from bottom {(x, y) = }")
                 visible.add((x, y))
             max_ = max([grid[y][x], max_])
-    # for item in sorted(visible):
-    #     print(item)
     return len(visible)
 
 def part2(data=None):
